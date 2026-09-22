@@ -1,0 +1,4 @@
+.scene{margin-bottom:10px}
+.translation{display:flex;flex-direction:column;gap:2px;width:min(430px,100%);margin:0 auto 20px;padding:12px 15px;border-radius:14px;background:linear-gradient(135deg,#f3efff,#fff0f5);border:1px solid #e8dfff;text-align:center}
+.translation small{font-size:.59rem;font-weight:900;letter-spacing:.12em;color:#958ca9}
+.translation strong{color:var(--violet-dark);font-size:1rem}
