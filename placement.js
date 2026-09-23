@@ -8,12 +8,20 @@ function findPlacementWord(category,hanzi){
 }
 
 function buildPlacementQuestions(){
-  const basicSequence=[
-    ['Essenciais','你好'],['Essenciais','谢谢'],['Essenciais','再见'],['Essenciais','请'],
-    ['Essenciais','是'],['Essenciais','水'],['Animais','狗'],['Animais','猫'],
-    ['Cores','红色'],['Cores','蓝色'],['Verbos','吃'],['Verbos','喝']
+  // Começa exatamente pelos conteúdos iniciais da aba Conversar.
+  const conversationFirst=[
+    {category:'Conversação inicial',word:['你好','nǐ hǎo','olá','3º ∨ · 3º ∨']},
+    {category:'Conversação inicial',word:['你好吗','nǐ hǎo ma','como você está?','3º ∨ · 3º ∨ · neutro']},
+    {category:'Conversação inicial',word:['我很好','wǒ hěn hǎo','eu estou muito bem','3º ∨ · 3º ∨ · 3º ∨']},
+    {category:'Conversação inicial',word:['你呢','nǐ ne','e você?','3º ∨ · neutro']},
+    {category:'Conversação inicial',word:['我叫 Eva','wǒ jiào Eva','meu nome é Eva','3º ∨ · 4º ↘']},
+    {category:'Conversação inicial',word:['再见','zàijiàn','até logo','4º ↘ · 4º ↘']}
   ];
-  const selected=basicSequence.map(([category,hanzi])=>findPlacementWord(category,hanzi)).filter(Boolean);
+  const nextBasics=[
+    ['Essenciais','谢谢'],['Essenciais','请'],['Essenciais','是'],
+    ['Essenciais','水'],['Verbos','吃'],['Verbos','喝']
+  ].map(([category,hanzi])=>findPlacementWord(category,hanzi)).filter(Boolean);
+  const selected=[...conversationFirst,...nextBasics];
   if(selected.length===12)return selected;
   const used=new Set(selected.map(q=>q.word[0]));
   for(const [category,words] of Object.entries(activeVocab)){
