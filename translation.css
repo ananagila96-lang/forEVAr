@@ -2,3 +2,4 @@
 .translation{display:flex;flex-direction:column;gap:2px;width:min(430px,100%);margin:0 auto 20px;padding:12px 15px;border-radius:14px;background:linear-gradient(135deg,#f3efff,#fff0f5);border:1px solid #e8dfff;text-align:center}
 .translation small{font-size:.59rem;font-weight:900;letter-spacing:.12em;color:#958ca9}
 .translation strong{color:var(--violet-dark);font-size:1rem}
+.vocab-search{width:100%;margin:0 0 6px;padding:14px 16px;border:1px solid #ddd8f1;border-radius:15px;background:#fff;color:#24213d;outline:none}.vocab-search:focus{border-color:var(--violet);box-shadow:0 0 0 3px #5b3fd718}.vocab-count{margin:0 0 12px;color:#77728f;font-size:.78rem;font-weight:800}.mandarin-word{color:var(--violet)!important;font-size:.92rem!important}
