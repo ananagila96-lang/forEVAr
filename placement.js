@@ -1,5 +1,6 @@
 const placementState={questions:[],index:0,score:0,mastered:[],answered:false};
 let placementStore=JSON.parse(localStorage.getItem('forevar-placement')||'{"mastered":[],"level":"Não realizado"}');
+let placementRecognition=null;
 
 function buildPlacementQuestions(){
   const selected=[];
@@ -21,12 +22,25 @@ function renderPlacementQuestion(){
   $('#placementFeedback').className='speech-result';$('#placementFeedback').textContent='Toque no microfone e responda em mandarim.';$('#placementSpeak').disabled=false;$('#placementDontKnow').disabled=false;$('#placementNext').classList.add('hidden');placementState.answered=false;
 }
 
-function placementRecognize(){
-  const q=placementState.questions[placementState.index],w=q.word,out=$('#placementFeedback'),SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){out.textContent='O teste oral precisa ser aberto no Chrome ou Edge com acesso ao microfone.';out.className='speech-result retry';return}
-  const r=new SR();r.lang='zh-CN';r.maxAlternatives=5;r.onstart=()=>{out.textContent='Estou ouvindo… fale agora.'};
-  r.onresult=e=>{const heard=[...e.results[0]].map(x=>x.transcript.replace(/[。！？\s]/g,'')),goal=w[0].replace(/[。！？\s]/g,''),ok=heard.some(x=>x.includes(goal)||goal.includes(x));finishPlacementAnswer(ok,w,heard[0])};
-  r.onerror=()=>{out.textContent='Não consegui ouvir. Confira a permissão do microfone e tente novamente.';out.className='speech-result retry'};r.start();
+async function placementRecognize(){
+  const q=placementState.questions[placementState.index],w=q.word,out=$('#placementFeedback'),button=$('#placementSpeak'),SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!window.isSecureContext){out.textContent='Abra o aplicativo pelo link oficial seguro para usar o microfone.';out.className='speech-result retry';return}
+  if(!navigator.mediaDevices?.getUserMedia){out.textContent='Este navegador não liberou o microfone. Abra o forEVAr no Chrome do celular.';out.className='speech-result retry';return}
+  if(!SR){out.textContent='Reconhecimento de voz indisponível. No Android, use o Chrome. No iPhone, use o Safari atualizado.';out.className='speech-result retry';return}
+  try{
+    button.disabled=true;button.classList.add('listening');button.textContent='🎙️ Preparando microfone…';out.textContent='Autorize o microfone quando o celular perguntar.';out.className='speech-result';
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});stream.getTracks().forEach(track=>track.stop());
+    placementRecognition=new SR();placementRecognition.lang='zh-CN';placementRecognition.continuous=false;placementRecognition.interimResults=false;placementRecognition.maxAlternatives=5;let received=false;
+    placementRecognition.onstart=()=>{button.textContent='🔴 Ouvindo… fale agora';out.textContent='Fale em mandarim. O microfone está ouvindo.'};
+    placementRecognition.onresult=e=>{received=true;const heard=[...e.results[0]].map(x=>x.transcript.replace(/[。！？\s]/g,'')),goal=w[0].replace(/[。！？\s]/g,''),ok=heard.some(x=>x.includes(goal)||goal.includes(x));resetPlacementMic();finishPlacementAnswer(ok,w,heard[0])};
+    placementRecognition.onerror=e=>{resetPlacementMic();const messages={'not-allowed':'Microfone bloqueado. Libere o acesso nas configurações do navegador.','service-not-allowed':'O navegador bloqueou o reconhecimento de voz.','no-speech':'Não ouvi sua fala. Toque novamente e fale perto do celular.','audio-capture':'O celular não conseguiu acessar o microfone.',network:'O reconhecimento de voz precisa de internet.'};out.textContent=messages[e.error]||'Não consegui ouvir. Toque novamente e tente.';out.className='speech-result retry'};
+    placementRecognition.onend=()=>{if(!received&&!placementState.answered){resetPlacementMic();if(!out.classList.contains('retry')){out.textContent='A escuta terminou sem resposta. Toque novamente e fale em mandarim.';out.className='speech-result retry'}}};
+    placementRecognition.start();
+  }catch(error){resetPlacementMic();out.textContent=error?.name==='NotAllowedError'?'O microfone está bloqueado. Toque no cadeado do navegador e permita o microfone.':'Não consegui abrir o microfone. Feche outros aplicativos que estejam usando áudio e tente novamente.';out.className='speech-result retry'}
+}
+
+function resetPlacementMic(){
+  const button=$('#placementSpeak');button.disabled=false;button.classList.remove('listening');button.textContent='🎙️ Falar em mandarim';placementRecognition=null;
 }
 
 function finishPlacementAnswer(ok,w,heard=''){
