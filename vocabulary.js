@@ -1,0 +1,47 @@
+// Vocabulário oral: [hanzi, pinyin, português, padrão tonal]
+const expandedVocab={
+'Animais':[
+['狗','gǒu','cachorro','3º ∨'],['猫','māo','gato','1º —'],['熊猫','xióngmāo','panda','2º ↗ · 1º —'],['鸟','niǎo','pássaro','3º ∨'],['鱼','yú','peixe','2º ↗'],
+['马','mǎ','cavalo','3º ∨'],['牛','niú','vaca','2º ↗'],['羊','yáng','ovelha','2º ↗'],['猪','zhū','porco','1º —'],['鸡','jī','galinha','1º —'],
+['鸭','yā','pato','1º —'],['鹅','é','ganso','2º ↗'],['兔子','tùzi','coelho','4º ↘ · neutro'],['老鼠','lǎoshǔ','rato','3º ∨ · 3º ∨'],['松鼠','sōngshǔ','esquilo','1º — · 3º ∨'],
+['猴子','hóuzi','macaco','2º ↗ · neutro'],['老虎','lǎohǔ','tigre','3º ∨ · 3º ∨'],['狮子','shīzi','leão','1º — · neutro'],['大象','dàxiàng','elefante','4º ↘ · 4º ↘'],['长颈鹿','chángjǐnglù','girafa','2º ↗ · 3º ∨ · 4º ↘'],
+['斑马','bānmǎ','zebra','1º — · 3º ∨'],['熊','xióng','urso','2º ↗'],['狼','láng','lobo','2º ↗'],['狐狸','húli','raposa','2º ↗ · neutro'],['鹿','lù','veado','4º ↘'],
+['袋鼠','dàishǔ','canguru','4º ↘ · 3º ∨'],['考拉','kǎolā','coala','3º ∨ · 1º —'],['河马','hémǎ','hipopótamo','2º ↗ · 3º ∨'],['犀牛','xīniú','rinoceronte','1º — · 2º ↗'],['骆驼','luòtuo','camelo','4º ↘ · neutro'],
+['蛇','shé','cobra','2º ↗'],['乌龟','wūguī','tartaruga','1º — · 1º —'],['青蛙','qīngwā','sapo','1º — · 1º —'],['鳄鱼','èyú','crocodilo','4º ↘ · 2º ↗'],['鲨鱼','shāyú','tubarão','1º — · 2º ↗'],
+['海豚','hǎitún','golfinho','3º ∨ · 2º ↗'],['鲸鱼','jīngyú','baleia','1º — · 2º ↗'],['章鱼','zhāngyú','polvo','1º — · 2º ↗'],['螃蟹','pángxiè','caranguejo','2º ↗ · 4º ↘'],['虾','xiā','camarão','1º —'],
+['蝴蝶','húdié','borboleta','2º ↗ · 2º ↗'],['蜜蜂','mìfēng','abelha','4º ↘ · 1º —'],['蚂蚁','mǎyǐ','formiga','3º ∨ · 3º ∨'],['蜘蛛','zhīzhū','aranha','1º — · 1º —'],['苍蝇','cāngying','mosca','1º — · neutro'],
+['蚊子','wénzi','mosquito','2º ↗ · neutro'],['鹦鹉','yīngwǔ','papagaio','1º — · 3º ∨'],['企鹅','qǐ’é','pinguim','3º ∨ · 4º ↘'],['猫头鹰','māotóuyīng','coruja','1º — · 2º ↗ · 1º —'],['老鹰','lǎoyīng','águia','3º ∨ · 1º —']],
+'Cores':[
+['红色','hóngsè','vermelho','2º ↗ · 4º ↘'],['蓝色','lánsè','azul','2º ↗ · 4º ↘'],['绿色','lǜsè','verde','4º ↘ · 4º ↘'],['黄色','huángsè','amarelo','2º ↗ · 4º ↘'],['白色','báisè','branco','2º ↗ · 4º ↘'],
+['黑色','hēisè','preto','1º — · 4º ↘'],['灰色','huīsè','cinza','1º — · 4º ↘'],['紫色','zǐsè','roxo','3º ∨ · 4º ↘'],['粉色','fěnsè','rosa','3º ∨ · 4º ↘'],['橙色','chéngsè','laranja','2º ↗ · 4º ↘'],
+['棕色','zōngsè','marrom','1º — · 4º ↘'],['金色','jīnsè','dourado','1º — · 4º ↘'],['银色','yínsè','prateado','2º ↗ · 4º ↘'],['米色','mǐsè','bege','3º ∨ · 4º ↘'],['咖啡色','kāfēisè','cor de café','1º — · 1º — · 4º ↘'],
+['浅蓝色','qiǎnlánsè','azul-claro','3º ∨ · 2º ↗ · 4º ↘'],['深蓝色','shēnlánsè','azul-escuro','1º — · 2º ↗ · 4º ↘'],['天蓝色','tiānlánsè','azul-celeste','1º — · 2º ↗ · 4º ↘'],['海蓝色','hǎilánsè','azul-marinho','3º ∨ · 2º ↗ · 4º ↘'],['宝蓝色','bǎolánsè','azul-real','3º ∨ · 2º ↗ · 4º ↘'],
+['浅绿色','qiǎnlǜsè','verde-claro','3º ∨ · 4º ↘ · 4º ↘'],['深绿色','shēnlǜsè','verde-escuro','1º — · 4º ↘ · 4º ↘'],['草绿色','cǎolǜsè','verde-grama','3º ∨ · 4º ↘ · 4º ↘'],['橄榄绿','gǎnlǎnlǜ','verde-oliva','3º ∨ · 3º ∨ · 4º ↘'],['墨绿色','mòlǜsè','verde-musgo','4º ↘ · 4º ↘ · 4º ↘'],
+['浅红色','qiǎnhóngsè','vermelho-claro','3º ∨ · 2º ↗ · 4º ↘'],['深红色','shēnhóngsè','vermelho-escuro','1º — · 2º ↗ · 4º ↘'],['酒红色','jiǔhóngsè','bordô','3º ∨ · 2º ↗ · 4º ↘'],['玫瑰红','méiguihóng','rosa-avermelhado','2º ↗ · neutro · 2º ↗'],['鲜红色','xiānhóngsè','vermelho-vivo','1º — · 2º ↗ · 4º ↘'],
+['浅粉色','qiǎnfěnsè','rosa-claro','3º ∨ · 3º ∨ · 4º ↘'],['深粉色','shēnfěnsè','rosa-escuro','1º — · 3º ∨ · 4º ↘'],['桃红色','táohóngsè','rosa-pêssego','2º ↗ · 2º ↗ · 4º ↘'],['珊瑚色','shānhúsè','coral','1º — · 2º ↗ · 4º ↘'],['紫红色','zǐhóngsè','magenta','3º ∨ · 2º ↗ · 4º ↘'],
+['浅紫色','qiǎnzǐsè','lilás','3º ∨ · 3º ∨ · 4º ↘'],['深紫色','shēnzǐsè','roxo-escuro','1º — · 3º ∨ · 4º ↘'],['葡萄紫','pútaozǐ','roxo-uva','2º ↗ · neutro · 3º ∨'],['薰衣草色','xūnyīcǎosè','lavanda','1º — · 1º — · 3º ∨ · 4º ↘'],['淡紫色','dànzǐsè','violeta-claro','4º ↘ · 3º ∨ · 4º ↘'],
+['浅灰色','qiǎnhuīsè','cinza-claro','3º ∨ · 1º — · 4º ↘'],['深灰色','shēnhuīsè','cinza-escuro','1º — · 1º — · 4º ↘'],['炭灰色','tànhuīsè','cinza-carvão','4º ↘ · 1º — · 4º ↘'],['乳白色','rǔbáisè','branco-leite','3º ∨ · 2º ↗ · 4º ↘'],['象牙色','xiàngyásè','marfim','4º ↘ · 2º ↗ · 4º ↘'],
+['土黄色','tǔhuángsè','ocre','3º ∨ · 2º ↗ · 4º ↘'],['柠檬黄','níngménghuáng','amarelo-limão','2º ↗ · 2º ↗ · 2º ↗'],['芥末黄','jièmòhuáng','amarelo-mostarda','4º ↘ · 4º ↘ · 2º ↗'],['古铜色','gǔtóngsè','bronze','3º ∨ · 2º ↗ · 4º ↘'],['透明','tòumíng','transparente','4º ↘ · 2º ↗']],
+'Verbos':[
+['吃','chī','comer','1º —'],['喝','hē','beber','1º —'],['去','qù','ir','4º ↘'],['来','lái','vir','2º ↗'],['看','kàn','ver','4º ↘'],
+['说','shuō','falar','1º —'],['听','tīng','ouvir','1º —'],['读','dú','ler','2º ↗'],['写','xiě','escrever','3º ∨'],['学','xué','aprender','2º ↗'],
+['教','jiāo','ensinar','1º —'],['问','wèn','perguntar','4º ↘'],['回答','huídá','responder','2º ↗ · 2º ↗'],['做','zuò','fazer','4º ↘'],['工作','gōngzuò','trabalhar','1º — · 4º ↘'],
+['玩','wán','brincar','2º ↗'],['睡觉','shuìjiào','dormir','4º ↘ · 4º ↘'],['起床','qǐchuáng','levantar','3º ∨ · 2º ↗'],['走','zǒu','andar','3º ∨'],['跑','pǎo','correr','3º ∨'],
+['跳','tiào','pular','4º ↘'],['坐','zuò','sentar','4º ↘'],['站','zhàn','ficar de pé','4º ↘'],['开','kāi','abrir','1º —'],['关','guān','fechar','1º —'],
+['买','mǎi','comprar','3º ∨'],['卖','mài','vender','4º ↘'],['给','gěi','dar','3º ∨'],['拿','ná','pegar','2º ↗'],['放','fàng','colocar','4º ↘'],
+['找','zhǎo','procurar','3º ∨'],['找到','zhǎodào','encontrar','3º ∨ · 4º ↘'],['喜欢','xǐhuan','gostar','3º ∨ · neutro'],['爱','ài','amar','4º ↘'],['想','xiǎng','querer/pensar','3º ∨'],
+['知道','zhīdào','saber','1º — · 4º ↘'],['认识','rènshi','conhecer','4º ↘ · neutro'],['记得','jìde','lembrar','4º ↘ · neutro'],['忘记','wàngjì','esquecer','4º ↘ · 4º ↘'],['帮助','bāngzhù','ajudar','1º — · 4º ↘'],
+['等','děng','esperar','3º ∨'],['开始','kāishǐ','começar','1º — · 3º ∨'],['结束','jiéshù','terminar','2º ↗ · 4º ↘'],['唱歌','chànggē','cantar','4º ↘ · 1º —'],['跳舞','tiàowǔ','dançar','4º ↘ · 3º ∨'],
+['游泳','yóuyǒng','nadar','2º ↗ · 3º ∨'],['旅行','lǚxíng','viajar','3º ∨ · 2º ↗'],['开车','kāichē','dirigir','1º — · 1º —'],['洗','xǐ','lavar','3º ∨'],['穿','chuān','vestir','1º —']],
+'Essenciais':[
+['你好','nǐ hǎo','olá','3º ∨ · 3º ∨'],['再见','zàijiàn','até logo','4º ↘ · 4º ↘'],['谢谢','xièxie','obrigada','4º ↘ · neutro'],['请','qǐng','por favor','3º ∨'],['对不起','duìbuqǐ','desculpe','4º ↘ · neutro · 3º ∨'],
+['没关系','méiguānxi','não tem problema','2º ↗ · 1º — · neutro'],['是','shì','sim/ser','4º ↘'],['不是','búshì','não é','2º ↗ · 4º ↘'],['好','hǎo','bom/certo','3º ∨'],['不好','bùhǎo','não está bom','4º ↘ · 3º ∨'],
+['水','shuǐ','água','3º ∨'],['食物','shíwù','comida','2º ↗ · 4º ↘'],['厕所','cèsuǒ','banheiro','4º ↘ · 3º ∨'],['家','jiā','casa','1º —'],['学校','xuéxiào','escola','2º ↗ · 4º ↘'],
+['老师','lǎoshī','professor','3º ∨ · 1º —'],['同学','tóngxué','colega de escola','2º ↗ · 2º ↗'],['朋友','péngyou','amigo','2º ↗ · neutro'],['妈妈','māma','mãe','1º — · neutro'],['爸爸','bàba','pai','4º ↘ · neutro'],
+['今天','jīntiān','hoje','1º — · 1º —'],['明天','míngtiān','amanhã','2º ↗ · 1º —'],['昨天','zuótiān','ontem','2º ↗ · 1º —'],['现在','xiànzài','agora','4º ↘ · 4º ↘'],['时间','shíjiān','tempo/horário','2º ↗ · 1º —'],
+['早上','zǎoshang','manhã','3º ∨ · neutro'],['下午','xiàwǔ','tarde','4º ↘ · 3º ∨'],['晚上','wǎnshang','noite','3º ∨ · neutro'],['这里','zhèlǐ','aqui','4º ↘ · 3º ∨'],['那里','nàlǐ','ali','4º ↘ · 3º ∨'],
+['哪里','nǎlǐ','onde','3º ∨ · 3º ∨'],['什么','shénme','o quê','2º ↗ · neutro'],['谁','shéi','quem','2º ↗'],['为什么','wèishénme','por quê','4º ↘ · 2º ↗ · neutro'],['怎么','zěnme','como','3º ∨ · neutro'],
+['多少','duōshao','quanto','1º — · neutro'],['一个','yí ge','um','2º ↗ · neutro'],['两个','liǎng ge','dois','3º ∨ · neutro'],['帮助','bāngzhù','ajuda','1º — · 4º ↘'],['医生','yīshēng','médico','1º — · 1º —'],
+['医院','yīyuàn','hospital','1º — · 4º ↘'],['警察','jǐngchá','polícia','3º ∨ · 2º ↗'],['电话','diànhuà','telefone','4º ↘ · 4º ↘'],['钱','qián','dinheiro','2º ↗'],['名字','míngzi','nome','2º ↗ · neutro'],
+['中国','Zhōngguó','China','1º — · 2º ↗'],['巴西','Bāxī','Brasil','1º — · 1º —'],['中文','Zhōngwén','chinês','1º — · 2º ↗'],['我明白','wǒ míngbai','eu entendo','3º ∨ · 2º ↗ · neutro'],['我不明白','wǒ bù míngbai','eu não entendo','3º ∨ · 4º ↘ · 2º ↗ · neutro']]
+};
