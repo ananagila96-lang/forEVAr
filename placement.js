@@ -2,16 +2,31 @@ const placementState={questions:[],index:0,score:0,mastered:[],answered:false};
 let placementStore=JSON.parse(localStorage.getItem('forevar-placement')||'{"mastered":[],"level":"Não realizado"}');
 let placementRecognition=null;
 
+function findPlacementWord(category,hanzi){
+  const word=(activeVocab[category]||[]).find(item=>item[0]===hanzi);
+  return word?{category,word}:null;
+}
+
 function buildPlacementQuestions(){
-  const selected=[];
-  Object.entries(activeVocab).forEach(([category,words])=>{
-    const pool=[...words].sort(()=>Math.random()-.5).slice(0,3);
-    pool.forEach(word=>selected.push({category,word}));
-  });
-  return selected.sort(()=>Math.random()-.5);
+  const basicSequence=[
+    ['Essenciais','你好'],['Essenciais','谢谢'],['Essenciais','再见'],['Essenciais','请'],
+    ['Essenciais','是'],['Essenciais','水'],['Animais','狗'],['Animais','猫'],
+    ['Cores','红色'],['Cores','蓝色'],['Verbos','吃'],['Verbos','喝']
+  ];
+  const selected=basicSequence.map(([category,hanzi])=>findPlacementWord(category,hanzi)).filter(Boolean);
+  if(selected.length===12)return selected;
+  const used=new Set(selected.map(q=>q.word[0]));
+  for(const [category,words] of Object.entries(activeVocab)){
+    for(const word of words){
+      if(!used.has(word[0])){selected.push({category,word});used.add(word[0])}
+      if(selected.length===12)return selected;
+    }
+  }
+  return selected;
 }
 
 function startPlacement(){
+  if(placementRecognition){try{placementRecognition.abort()}catch(_){} placementRecognition=null}
   placementState.questions=buildPlacementQuestions();placementState.index=0;placementState.score=0;placementState.mastered=[];placementState.answered=false;
   $('#placementIntro').classList.add('hidden');$('#placementResult').classList.add('hidden');$('#placementQuiz').classList.remove('hidden');renderPlacementQuestion();
 }
@@ -22,21 +37,24 @@ function renderPlacementQuestion(){
   $('#placementFeedback').className='speech-result';$('#placementFeedback').textContent='Toque no microfone e responda em mandarim.';$('#placementSpeak').disabled=false;$('#placementDontKnow').disabled=false;$('#placementNext').classList.add('hidden');placementState.answered=false;
 }
 
-async function placementRecognize(){
-  const q=placementState.questions[placementState.index],w=q.word,out=$('#placementFeedback'),button=$('#placementSpeak'),SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!window.isSecureContext){out.textContent='Abra o aplicativo pelo link oficial seguro para usar o microfone.';out.className='speech-result retry';return}
-  if(!navigator.mediaDevices?.getUserMedia){out.textContent='Este navegador não liberou o microfone. Abra o forEVAr no Chrome do celular.';out.className='speech-result retry';return}
+function placementRecognize(){
+  const q=placementState.questions[placementState.index];
+  if(!q||placementState.answered)return;
+  const w=q.word,out=$('#placementFeedback'),button=$('#placementSpeak'),SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!window.isSecureContext){out.textContent='Abra o aplicativo pelo link oficial HTTPS para usar o microfone.';out.className='speech-result retry';return}
   if(!SR){out.textContent='Reconhecimento de voz indisponível. No Android, use o Chrome. No iPhone, use o Safari atualizado.';out.className='speech-result retry';return}
   try{
-    button.disabled=true;button.classList.add('listening');button.textContent='🎙️ Preparando microfone…';out.textContent='Autorize o microfone quando o celular perguntar.';out.className='speech-result';
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});stream.getTracks().forEach(track=>track.stop());
-    placementRecognition=new SR();placementRecognition.lang='zh-CN';placementRecognition.continuous=false;placementRecognition.interimResults=false;placementRecognition.maxAlternatives=5;let received=false;
-    placementRecognition.onstart=()=>{button.textContent='🔴 Ouvindo… fale agora';out.textContent='Fale em mandarim. O microfone está ouvindo.'};
-    placementRecognition.onresult=e=>{received=true;const heard=[...e.results[0]].map(x=>x.transcript.replace(/[。！？\s]/g,'')),goal=w[0].replace(/[。！？\s]/g,''),ok=heard.some(x=>x.includes(goal)||goal.includes(x));resetPlacementMic();finishPlacementAnswer(ok,w,heard[0])};
-    placementRecognition.onerror=e=>{resetPlacementMic();const messages={'not-allowed':'Microfone bloqueado. Libere o acesso nas configurações do navegador.','service-not-allowed':'O navegador bloqueou o reconhecimento de voz.','no-speech':'Não ouvi sua fala. Toque novamente e fale perto do celular.','audio-capture':'O celular não conseguiu acessar o microfone.',network:'O reconhecimento de voz precisa de internet.'};out.textContent=messages[e.error]||'Não consegui ouvir. Toque novamente e tente.';out.className='speech-result retry'};
-    placementRecognition.onend=()=>{if(!received&&!placementState.answered){resetPlacementMic();if(!out.classList.contains('retry')){out.textContent='A escuta terminou sem resposta. Toque novamente e fale em mandarim.';out.className='speech-result retry'}}};
-    placementRecognition.start();
-  }catch(error){resetPlacementMic();out.textContent=error?.name==='NotAllowedError'?'O microfone está bloqueado. Toque no cadeado do navegador e permita o microfone.':'Não consegui abrir o microfone. Feche outros aplicativos que estejam usando áudio e tente novamente.';out.className='speech-result retry'}
+    if(placementRecognition){try{placementRecognition.abort()}catch(_){} placementRecognition=null}
+    const recognition=new SR();placementRecognition=recognition;
+    recognition.lang='zh-CN';recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=5;
+    let received=false;
+    button.disabled=true;button.classList.add('listening');button.textContent='🎙️ Abrindo microfone…';out.textContent='Permita o microfone se o celular perguntar e fale em mandarim.';out.className='speech-result';
+    recognition.onstart=()=>{button.textContent='🔴 Ouvindo… fale agora';out.textContent='Fale agora em mandarim. Estou ouvindo.'};
+    recognition.onresult=e=>{received=true;const heard=[...e.results[0]].map(x=>x.transcript.replace(/[。！？\s]/g,'')),goal=w[0].replace(/[。！？\s]/g,''),ok=heard.some(x=>x.includes(goal)||goal.includes(x));resetPlacementMic();finishPlacementAnswer(ok,w,heard[0])};
+    recognition.onerror=e=>{resetPlacementMic();const messages={'not-allowed':'Microfone bloqueado. Permita o microfone para este site nas configurações do navegador.','service-not-allowed':'O navegador bloqueou o reconhecimento de voz.','no-speech':'Não ouvi sua fala. Toque novamente e fale perto do celular.','audio-capture':'O celular não conseguiu acessar o microfone.',network:'O reconhecimento de voz precisa de internet.',aborted:'A escuta foi interrompida. Toque novamente para falar.'};out.textContent=messages[e.error]||'Não consegui ouvir. Toque novamente e tente.';out.className='speech-result retry'};
+    recognition.onend=()=>{if(placementRecognition===recognition)placementRecognition=null;if(!received&&!placementState.answered){resetPlacementMic();if(!out.classList.contains('retry')){out.textContent='A escuta terminou sem resposta. Toque novamente e fale em mandarim.';out.className='speech-result retry'}}};
+    recognition.start();
+  }catch(error){resetPlacementMic();out.textContent='Não consegui iniciar o microfone. Verifique a permissão do navegador e tente novamente.';out.className='speech-result retry'}
 }
 
 function resetPlacementMic(){
